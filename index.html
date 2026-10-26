@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Theo dõi hồ sơ XKLĐ Nhật</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f5f1;--card:#fff;--tx:#1f2328;--mu:#6b7280;--bd:#e3e1da;--ac:#1d4ed8;--acb:#e8eefc;
+--s0:#9ca3af;--s0b:#f1f1ef;--s1:#b45309;--s1b:#fdf1d9;--s2:#15803d;--s2b:#dff3e5;--rd:#b91c1c;--rdb:#fde8e8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+--bg:#16181c;--card:#1f2227;--tx:#e8e8e6;--mu:#9aa0a8;--bd:#33373d;--ac:#7aa2ff;--acb:#232d47;
+--s0:#8b919a;--s0b:#2a2d33;--s1:#f0b45a;--s1b:#3b2f17;--s2:#6fd08c;--s2b:#17341f;--rd:#f28b8b;--rdb:#3d1f1f}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:960px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:0}h2{font-size:16px;margin:0}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.top h1{flex:1;min-width:200px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+button,input,select{font:inherit;color:inherit}
+.tab,.btn{border:1px solid var(--bd);background:var(--card);border-radius:8px;padding:7px 12px;cursor:pointer}
+.tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn.d{color:var(--rd)}
+.btn.sm{padding:3px 9px;font-size:13px}
+input,select{border:1px solid var(--bd);background:var(--card);border-radius:8px;padding:7px 10px;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:22px}.stat span{color:var(--mu);font-size:13px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.grp{font-weight:600;margin:16px 0 6px;color:var(--mu);font-size:13px;text-transform:uppercase;letter-spacing:.03em}
+.ord{cursor:pointer}.ord:hover{border-color:var(--ac)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.mu{color:var(--mu);font-size:13px}
+.bar{height:6px;background:var(--s0b);border-radius:4px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--s2)}
+.nr{grid-column:2 / span 2;display:flex;gap:6px}.nr .note{flex:1;grid-column:auto}.dl{font-size:13px;padding:3px 6px;width:140px}.dl.od{color:var(--rd);border-color:var(--rd);font-weight:600}
+.who{font-size:12px;color:var(--mu);white-space:nowrap;align-self:center}.who::before{content:"✎ "}
+.chip{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--s0b);color:var(--mu)}.chip.ok{background:var(--s2b);color:var(--s2)}
+.nmi{border-color:transparent;background:transparent;padding:4px 6px;width:100%;font-weight:500}.nmi:focus{border-color:var(--bd);background:var(--card)}
+.t{display:grid;grid-template-columns:104px 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--bd)}
+.t:first-of-type{border-top:0}
+.t .nm{grid-column:2}
+.st{border-radius:999px;border:0;padding:5px 8px;cursor:pointer;font-size:13px;font-weight:600;width:104px}
+.st0{background:var(--s0b);color:var(--s0)}.st1{background:var(--s1b);color:var(--s1)}.st2{background:var(--s2b);color:var(--s2)}
+.t.s2 .nm{color:var(--mu);text-decoration:line-through}
+.note{width:100%;font-size:13px;padding:4px 8px;grid-column:2 / span 2}
+.badge{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--acb);color:var(--ac)}
+.badge.x{background:var(--rdb);color:var(--rd)}
+.cand.fail{opacity:.75}
+.add{display:flex;gap:6px;margin-top:8px}.add input{flex:1}
+form-like{display:block}
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:10px}
+.path{font-size:12px;color:var(--mu)}
+a.lk{color:var(--ac);cursor:pointer}
+textarea{width:100%;height:110px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:8px;font:12px monospace}
+</style></head><body><div class="w" id="app"></div>
+<script>
+const OT=['Nhận đơn tuyển dụng','Dịch đơn sang tiếng Việt','Gửi đơn cho bộ phận tuyển dụng','Thông báo tuyển dụng','Lịch điều xe phỏng vấn','Thông báo trúng tuyển','Thông báo vé máy bay'];
+const CT=['Nhận CV từ bộ phận tuyển dụng','Dịch CV','Phỏng vấn / kết quả','Khám sức khỏe','Xét nghiệm lao','Hồ sơ 1-3','Hồ sơ 1-20','Hợp đồng','Nộp hồ sơ xin COE','Kết quả COE','Xin visa','Kết quả visa'];
+const NEWT=['Nộp hồ sơ xin COE','Kết quả COE','Xin visa','Kết quả visa'];
+const ST=['Chưa làm','Đang làm','Đã xong'];
+const K='xkld-v1';
+let DB=null,U=null,ME='',first=true,LAST={};
+const strip=o=>JSON.stringify({...o,by:0,at:0});
+const stamp=t=>{if(ME){t.u=ME;t.at=Date.now()}};
+const ago=t=>t?new Date(t).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}):'';
+const err=x=>{V.err=(x&&x.message)||'Lỗi ghi dữ liệu';render()};
+const chip=()=>DB?`<span class="chip ok">● Đồng bộ trực tiếp${V.err?' — '+e(V.err):''}</span>`:`<span class="chip">Chế độ cá nhân (chỉ lưu trong máy này)</span>`;
+function rr(){const a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&document.getElementById('app').contains(a)){V.dirty=1;return}render()}
+addEventListener('focusout',()=>{if(V.dirty)setTimeout(()=>{const a=document.activeElement;if(!a||!/INPUT|TEXTAREA|SELECT/.test(a.tagName)){V.dirty=0;render()}},250)});
+async function fillNames(){if(!U)return;const els=[...document.querySelectorAll('[data-u]')];const ids=[...new Set(els.map(x=>x.dataset.u))];if(!ids.length)return;try{const ps=await U.profiles(ids);els.forEach(x=>{const p=ps[x.dataset.u];x.textContent=((p&&p.name)||'Ai đó')+' · '+x.dataset.t})}catch(_){}}
+const uid=()=>Math.random().toString(36).slice(2,9);
+const mk=a=>a.map(t=>({t,s:0,n:''}));
+const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function load(){try{const r=localStorage.getItem(K);if(r)return JSON.parse(r)}catch(_){}return {orders:[]}}
+function save(){try{localStorage.setItem(K,JSON.stringify(D))}catch(_){}sync()}
+function sync(){if(!DB)return;
+ D.orders.forEach(o=>{const j=strip(o);if(LAST[o.id]!==j){o.by=ME;o.at=Date.now();LAST[o.id]=j;DB.doc('orders/'+o.id).set(o).catch(err)}});
+ Object.keys(LAST).forEach(id=>{if(!D.orders.some(o=>o.id===id)){delete LAST[id];DB.doc('orders/'+id).delete().catch(err)}})}
+let D=load(),V={v:'home',oid:null,open:{},f:'1',q:'',del:null,bk:false};
+if(!D.m2){D.orders.forEach(o=>o.cands.forEach(c=>NEWT.forEach(n=>{if(!c.tasks.some(t=>t.t===n))c.tasks.push({t:n,s:0,n:''})})));if(D.tpl&&!D.tpl.ct.includes(NEWT[0]))D.tpl.ct.push(...NEWT);D.m2=1;save()}
+const O=id=>D.orders.find(o=>o.id===id);
+const tl=(o,c)=>c?o.cands.find(x=>x.id===c).tasks:o.tasks;
+const pct=a=>a.length?Math.round(a.filter(t=>t.s==2).length*100/a.length):0;
+function oprog(o){const a=[...o.tasks];o.cands.filter(c=>!c.fail).forEach(c=>a.push(...c.tasks));return pct(a)}
+function go(v,id){V.v=v;V.msg='';V.oid=id||null;V.del=null;render();scrollTo(0,0)}
+function cyc(o,c,i){const t=tl(O(o),c)[i];t.s=(t.s+1)%3;stamp(t);save();render()}
+function setN(o,c,i,v){const t=tl(O(o),c)[i];t.n=v;stamp(t);save()}
+function renT(o,c,i,v){v=v.trim();if(!v)return;tl(O(o),c)[i].t=v;save()}
+function delT(o,c,i){const k='t'+o+c+i;if(V.del!==k){V.del=k;render();return}V.del=null;tl(O(o),c).splice(i,1);save();render()}
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const late=t=>!!t.d&&t.s<2&&t.d<today();
+const fmt=d=>d.split('-').reverse().join('/');
+function setD(o,c,i,v){const t=tl(O(o),c)[i];t.d=v;stamp(t);save();render()}
+function lines(id){return document.getElementById(id).value.split('\n').map(s=>s.trim()).filter(Boolean)}
+function saveTpl(ap){const a=lines('tO'),b=lines('tC');D.tpl={ot:a.length?a:OT,ct:b.length?b:CT};
+ if(ap)D.orders.forEach(o=>{D.tpl.ot.forEach(n=>{if(!o.tasks.some(t=>t.t===n))o.tasks.push({t:n,s:0,n:''})});o.cands.forEach(c=>D.tpl.ct.forEach(n=>{if(!c.tasks.some(t=>t.t===n))c.tasks.push({t:n,s:0,n:''})}))});
+ if(DB)DB.doc('meta/tpl').set(D.tpl).catch(err);V.tp=true;V.msg=ap?'Đã lưu và thêm việc mới vào các đơn hiện có':'Đã lưu mẫu';save();render()}
+function addT(o,c,id){const el=document.getElementById(id);const v=el.value.trim();if(!v)return;tl(O(o),c).push({t:v,s:0,n:''});save();render()}
+function addO(){const g=id=>document.getElementById(id).value.trim();
+ if(!g('nU')||!g('nC')){alert('Nhập tên nghiệp đoàn và xí nghiệp');return}
+ const o={id:uid(),created:Date.now(),union:g('nU'),company:g('nC'),title:g('nT')||'Đơn tuyển',date:g('nD'),note:'',tasks:mk(D.tpl?D.tpl.ot:OT),cands:[]};
+ D.orders.unshift(o);save();go('order',o.id)}
+function addC(o){const el=document.getElementById('nc');const v=el.value.trim();if(!v)return;
+ const c={id:uid(),name:v,note:'',fail:false,reason:'',tasks:mk(D.tpl?D.tpl.ct:CT)};O(o).cands.push(c);V.open={};V.open[c.id]=1;save();render();document.getElementById('nc').focus()}
+function allC(f){const o=O(V.oid);V.open={};if(f)o.cands.forEach(c=>V.open[c.id]=1);render()}
+function tog(c){V.open[c]=!V.open[c];render()}
+function failC(o,c){const x=O(o).cands.find(z=>z.id===c);x.stage=document.getElementById('s'+c).value;x.reason=document.getElementById('r'+c).value.trim();x.failDate=today();x.fail=true;save();render()}
+function fail(o,c,v){const x=O(o).cands.find(z=>z.id===c);x.fail=v;save();render()}
+function setF(o,c,k,v){const x=c?O(o).cands.find(z=>z.id===c):O(o);x[k]=v;save()}
+function delC(o,c){const k='c'+c;if(V.del!==k){V.del=k;render();return}V.del=null;O(o).cands=O(o).cands.filter(x=>x.id!==c);save();render()}
+function delO(o){if(V.del!=='o'){V.del='o';render();return}D.orders=D.orders.filter(x=>x.id!==o);save();go('home')}
+function restore(){try{const j=JSON.parse(document.getElementById('bk').value);if(!j.orders)throw 0;D=j;save();V.bk=false;go('home')}catch(_){alert('Dữ liệu không hợp lệ')}}
+
+function taskRows(o,c,list){return list.map((t,i)=>`<div class="t s${t.s}">
+<button class="st st${t.s}" onclick="cyc('${o}','${c}',${i})">${ST[t.s]}</button><input class="nm nmi" value="${e(t.t)}" onchange="renT('${o}','${c}',${i},this.value)"><button class="btn sm d" title="Xóa việc này" onclick="delT('${o}','${c}',${i})">${V.del==='t'+o+c+i?'Xóa?':'×'}</button>
+<div class="nr"><input class="note" placeholder="Ghi chú…" value="${e(t.n)}" onchange="setN('${o}','${c}',${i},this.value)"><input type="date" class="dl ${late(t)?'od':''}" title="Hạn (deadline)" value="${e(t.d||'')}" onchange="setD('${o}','${c}',${i},this.value)">${t.u?`<span class="who" data-u="${e(t.u)}" data-t="${ago(t.at)}"></span>`:''}</div></div>`).join('')}
+function addRow(o,c){const id='a'+o+c;return `<div class="add"><input id="${id}" placeholder="+ Thêm việc khác…" onkeydown="if(event.key==='Enter')addT('${o}','${c}','${id}')"><button class="btn sm" onclick="addT('${o}','${c}','${id}')">Thêm</button></div>`}
+
+function home(){
+ const q=V.q.toLowerCase();
+ const L=D.orders.filter(o=>!q||[o.union,o.company,o.title,...o.cands.map(c=>c.name)].join(' ').toLowerCase().includes(q));
+ const all=D.orders.flatMap(o=>[...o.tasks,...o.cands.filter(c=>!c.fail).flatMap(c=>c.tasks)]);
+ const nc=D.orders.reduce((a,o)=>a+o.cands.filter(c=>!c.fail).length,0);
+ let h=`<div class="stats"><div class="stat"><b>${D.orders.length}</b><span>Đơn tuyển</span></div><div class="stat"><b>${nc}</b><span>Ứng viên còn hồ sơ</span></div>
+ <div class="stat"><b style="color:var(--s1)">${all.filter(t=>t.s==1).length}</b><span>Việc đang làm</span></div><div class="stat"><b style="color:var(--rd)">${all.filter(late).length}</b><span>Quá hạn</span></div><div class="stat"><b>${all.filter(t=>t.s==0).length}</b><span>Việc chưa làm</span></div></div>
+ <details class="card" ${D.orders.length?'':'open'}><summary style="cursor:pointer;font-weight:600">+ Thêm đơn tuyển mới</summary>
+ <div class="row" style="margin-top:10px"><input id="nU" list="lu" placeholder="Nghiệp đoàn"><input id="nC" list="lc" placeholder="Xí nghiệp"><input id="nT" placeholder="Ngành / vị trí (vd: Cơ khí, 5 nam)"><input id="nD" placeholder="Ngày PV / hạn (tùy chọn)"><button class="btn p" onclick="addO()">Tạo đơn</button></div>
+ <datalist id="lu">${[...new Set(D.orders.map(o=>o.union))].map(x=>`<option value="${e(x)}">`).join('')}</datalist>
+ <datalist id="lc">${[...new Set(D.orders.map(o=>o.company))].map(x=>`<option value="${e(x)}">`).join('')}</datalist></details>
+ <input style="width:100%;margin-bottom:6px" placeholder="Tìm nghiệp đoàn, xí nghiệp, tên ứng viên…" value="${e(V.q)}" oninput="V.q=this.value;render(true)" id="q">`;
+ if(!L.length)h+=`<p class="mu">Chưa có đơn nào. Bấm “Thêm đơn tuyển mới” để bắt đầu.</p>`;
+ const g={};L.forEach(o=>{(g[o.union+' › '+o.company]??=[]).push(o)});
+ for(const k in g){h+=`<div class="grp">${e(k)}</div>`;g[k].forEach(o=>{const p=oprog(o),ok=o.cands.filter(c=>!c.fail).length,x=o.cands.length-ok;
+  const cur=o.tasks.find(t=>t.s<2);
+  h+=`<div class="card ord" onclick="go('order','${o.id}')"><div class="row"><h2>${e(o.title)}</h2><span class="mu">${e(o.date)}</span><span class="sp"></span><span class="badge">${ok} ứng viên</span>${x?`<span class="badge x">${x} loại</span>`:''}<b>${p}%</b></div>
+  <div class="mu">${cur?'Bước đơn tiếp theo: '+e(cur.t):'Việc cấp đơn đã xong'}${o.by?` <span class="who" data-u="${e(o.by)}" data-t="${ago(o.at)}"></span>`:''}</div><div class="bar"><i style="width:${p}%"></i></div></div>`})}
+ h+=`<details class="mu" style="margin-top:20px" ${V.tp?'open':''} ontoggle="V.tp=this.open"><summary style="cursor:pointer">⚙️ Chỉnh danh sách việc mẫu</summary>
+<p>Mỗi dòng là một việc. Mẫu dùng cho đơn và ứng viên tạo mới.</p>
+<b>Việc cấp đơn</b><textarea id="tO">${e((D.tpl?D.tpl.ot:OT).join('\n'))}</textarea>
+<b>Việc của ứng viên</b><textarea id="tC">${e((D.tpl?D.tpl.ct:CT).join('\n'))}</textarea>
+<div class="row" style="margin-top:6px"><button class="btn sm p" onclick="saveTpl(0)">Lưu mẫu</button><button class="btn sm" onclick="saveTpl(1)">Lưu và thêm việc mới vào các đơn đã có</button></div>${V.msg?`<p>${V.msg}</p>`:''}</details>`;
+ h+=`<details class="mu" style="margin-top:20px" ${V.bk?'open':''}><summary style="cursor:pointer">Sao lưu / khôi phục dữ liệu</summary><p>Dữ liệu lưu trong trình duyệt này. Copy đoạn dưới để sao lưu; dán dữ liệu cũ vào rồi bấm khôi phục.</p>
+ <textarea id="bk" onfocus="V.bk=true">${e(JSON.stringify(D))}</textarea><button class="btn sm" onclick="restore()">Khôi phục từ nội dung trên</button></details>`;
+ return h}
+
+function order(){const o=O(V.oid);if(!o){V.v='home';return home()}
+ let h=`<a class="lk" onclick="go('home')">← Tất cả đơn</a>
+ <div class="card" style="margin-top:8px"><div class="path">${e(o.union)} › ${e(o.company)}</div>
+ <div class="row" style="margin:6px 0"><input value="${e(o.title)}" onchange="setF('${o.id}','','title',this.value)" style="font-weight:600"><input value="${e(o.date)}" placeholder="Ngày PV / hạn" onchange="setF('${o.id}','','date',this.value)"><span class="sp"></span><b>${oprog(o)}%</b></div>
+ <input style="width:100%" placeholder="Ghi chú chung cho đơn…" value="${e(o.note)}" onchange="setF('${o.id}','','note',this.value)"></div>
+ <div class="grp">Việc cấp đơn</div><div class="card">${taskRows(o.id,'',o.tasks)}${addRow(o.id,'')}</div>
+ <div class="grp row">Ứng viên (${o.cands.length})<span class="sp"></span><button class="btn sm" onclick="allC(0)">Thu gọn tất cả</button><button class="btn sm" onclick="allC(1)">Mở tất cả</button></div>
+ <div class="add" style="margin:0 0 10px"><input id="nc" placeholder="+ Tên ứng viên mới (Enter để thêm)" onkeydown="if(event.key==='Enter')addC('${o.id}')"><button class="btn p" onclick="addC('${o.id}')">Thêm ứng viên</button></div>`;
+ o.cands.forEach(c=>{const p=pct(c.tasks),op=V.open[c.id],cur=c.tasks.find(t=>t.s<2);
+  h+=`<div class="card cand ${c.fail?'fail':''}"><div class="row" style="cursor:pointer" onclick="tog('${c.id}')"><b>${op?'▾':'▸'} ${e(c.name)}</b>${c.fail?`<span class="badge x">Loại${c.stage?' · '+e(c.stage):''}${c.reason?': '+e(c.reason):''}${c.failDate?' ('+fmt(c.failDate)+')':''}</span>`:`<span class="mu">${cur?'Tiếp: '+e(cur.t):'Hoàn tất'}</span>`}<span class="sp"></span><span class="mu">${c.tasks.filter(t=>t.s==2).length}/${c.tasks.length}</span></div>
+  ${c.fail?'':`<div class="bar"><i style="width:${p}%"></i></div>`}`;
+  if(op){h+=`<div style="margin-top:8px">${taskRows(o.id,c.id,c.tasks)}${addRow(o.id,c.id)}
+   <input class="note" style="margin-top:8px;grid-column:auto" placeholder="Ghi chú ứng viên (SĐT, vấn đề…)" value="${e(c.note)}" onchange="setF('${o.id}','${c.id}','note',this.value)">
+   <div class="row" style="margin-top:8px">${c.fail?`<button class="btn sm" onclick="fail('${o.id}','${c.id}',false)">Khôi phục ứng viên</button>`:`<select id="s${c.id}"><option>Rớt phỏng vấn</option><option>Bệnh / khám sức khỏe</option><option>Rớt COE</option><option>Rớt visa</option><option>Tự bỏ / rút hồ sơ</option><option>Khác</option></select><input placeholder="Ghi chú lý do (không bắt buộc)" id="r${c.id}" style="flex:1"><button class="btn sm d" onclick="failC('${o.id}','${c.id}')">Loại</button>`}
+   <button class="btn sm d" onclick="delC('${o.id}','${c.id}')">${V.del==='c'+c.id?'Bấm lại để xóa':'Xóa'}</button></div></div>`}
+  h+='</div>'});
+ h+=`
+ <p style="margin-top:24px"><button class="btn sm d" onclick="delO('${o.id}')">${V.del==='o'?'Bấm lại để xóa cả đơn':'Xóa đơn này'}</button></p>`;
+ return h}
+
+function todo(){const rows=[];
+ D.orders.forEach(o=>{const p=`${o.union} › ${o.company} › ${o.title}`;
+  o.tasks.forEach((t,i)=>rows.push({o,c:'',i,t,p,w:'(Cả đơn)'}));
+  o.cands.filter(c=>!c.fail).forEach(c=>c.tasks.forEach((t,i)=>rows.push({o,c:c.id,i,t,p,w:c.name})))});
+ const R=rows.filter(r=>V.f==='all'?r.t.s<2:V.f==='od'?late(r.t):r.t.s==V.f).sort((a,b)=>(a.t.d||'9')<(b.t.d||'9')?-1:1);
+ let h=`<div class="tl">${[['od','⚠ Quá hạn'],['1','Đang làm'],['0','Chưa làm'],['all','Chưa xong (tất cả)']].map(([k,l])=>`<button class="tab ${V.f===k?'on':''}" onclick="V.f='${k}';render()">${l}</button>`).join('')}</div>`;
+ if(!R.length)return h+'<p class="mu">Không có việc nào ở mục này 🎉</p>';
+ const g={};R.forEach(r=>(g[r.w+'|'+r.o.id]??=[]).push(r));
+ for(const k in g){const r0=g[k][0];h+=`<div class="card"><div class="row"><b>${e(r0.w)}</b><span class="path">${e(r0.p)}</span><span class="sp"></span><a class="lk" onclick="go('order','${r0.o.id}')">Mở đơn →</a></div>`;
+  g[k].forEach(r=>{h+=`<div class="t s${r.t.s}"><button class="st st${r.t.s}" onclick="cyc('${r.o.id}','${r.c}',${r.i})">${ST[r.t.s]}</button><div class="nm">${e(r.t.t)}${r.t.d?` <span class="badge ${late(r.t)?'x':''}">Hạn ${fmt(r.t.d)}</span>`:''}${r.t.n?` <span class="mu">— ${e(r.t.n)}</span>`:''}</div></div>`});h+='</div>'}
+ return h}
+
+function render(keepQ){const a=document.getElementById('app');
+ a.innerHTML=`<div class="top"><h1>📋 Theo dõi hồ sơ XKLĐ Nhật</h1>${chip()}</div>
+ <div class="tabs"><button class="tab ${V.v==='todo'?'':'on'}" onclick="go('home')">Các đơn tuyển</button><button class="tab ${V.v==='todo'?'on':''}" onclick="go('todo')">Việc cần làm</button></div>`+(V.v==='todo'?todo():V.v==='order'?order():home());
+ if(keepQ){const q=document.getElementById('q');q.focus();q.setSelectionRange(q.value.length,q.value.length)}fillNames()}
+render();
+(async()=>{
+ try{DB=await claude.use('db');U=await claude.use('user')}catch(_){}
+ if(U){try{ME=(await U.id())||''}catch(_){}}
+ if(!DB){render();return}
+ DB.collection('orders').onSnapshot(s=>{
+  const arr=s.docs.map(d=>JSON.parse(JSON.stringify(d.data()))).sort((a,b)=>(b.created||0)-(a.created||0));
+  if(first&&!arr.length&&D.orders.length){first=false;render();sync();return}
+  first=false;
+  if(JSON.stringify(arr)===JSON.stringify(D.orders)){render();return}
+  D.orders=arr;LAST={};arr.forEach(o=>LAST[o.id]=strip(o));
+  try{localStorage.setItem(K,JSON.stringify(D))}catch(_){}
+  rr()},x=>{V.err=x.message;render()});
+ DB.doc('meta/tpl').onSnapshot(s=>{if(s.exists){D.tpl=JSON.parse(JSON.stringify(s.data()));rr()}},()=>{});
+})();
+</script></body></html>

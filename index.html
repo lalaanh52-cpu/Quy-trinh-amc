@@ -67,7 +67,7 @@ const strip=o=>JSON.stringify({...o,by:0,at:0});
 const stamp=t=>{if(ME){t.u=ME;t.at=Date.now()}};
 const ago=t=>t?new Date(t).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'}):'';
 const err=x=>{V.err=(x&&x.message)||'Lỗi ghi dữ liệu';render()};
-const chip=()=>DB?`<span class="chip ok">● Đồng bộ trực tiếp${V.err?' — '+e(V.err):''}</span>`:`<span class="chip">Chế độ cá nhân (chỉ lưu trong máy này)</span>`;
+const chip=()=>DB?`<span class="chip ok">● Đồng bộ trực tiếp · ${e(ME)} · <a class="lk" onclick="gOut()">Đăng xuất</a>${V.err?' — '+e(V.err):''}</span>`:`<span class="chip">Chế độ cá nhân (chỉ lưu trong máy này)${V.err?' — '+e(V.err):''}</span>`;
 function rr(){const a=document.activeElement;if(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName)&&document.getElementById('app').contains(a)){V.dirty=1;return}render()}
 addEventListener('focusout',()=>{if(V.dirty)setTimeout(()=>{const a=document.activeElement;if(!a||!/INPUT|TEXTAREA|SELECT/.test(a.tagName)){V.dirty=0;render()}},250)});
 async function fillNames(){if(!U)return;const els=[...document.querySelectorAll('[data-u]')];const ids=[...new Set(els.map(x=>x.dataset.u))];if(!ids.length)return;try{const ps=await U.profiles(ids);els.forEach(x=>{const p=ps[x.dataset.u];x.textContent=((p&&p.name)||'Ai đó')+' · '+x.dataset.t})}catch(_){}}
@@ -184,8 +184,40 @@ function render(keepQ){const a=document.getElementById('app');
  if(keepQ){const q=document.getElementById('q');q.focus();q.setSelectionRange(q.value.length,q.value.length)}fillNames()}
 render();
 (async()=>{
- try{DB=await claude.use('db');U=await claude.use('user')}catch(_){}
- if(U){try{ME=(await U.id())||''}catch(_){}}
+ /* ====== FIREBASE: dán firebaseConfig của bạn vào đây ====== */
+ const firebaseConfig={
+  apiKey:"AIzaSyD69J3Us_UDqbHIK214reaqBxIT6j7issg",
+  authDomain:"quy-65b23.firebaseapp.com",
+  projectId:"quy-65b23",
+  storageBucket:"quy-65b23.firebasestorage.app",
+  messagingSenderId:"22471827242",
+  appId:"1:22471827242:web:523be8c96b9d3881cb4853"
+ };
+ /* ========================================================== */
+ try{
+  if(firebaseConfig.apiKey.startsWith('DAN_'))throw new Error('Chưa dán firebaseConfig');
+  const B='https://www.gstatic.com/firebasejs/10.12.2/';
+  const [{initializeApp},A,F]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);
+  const app=initializeApp(firebaseConfig);
+  const auth=A.getAuth(app);
+  /* Bắt buộc đăng nhập Google. Chỉ email có trong Rules mới đọc/ghi được dữ liệu */
+  window.gLogin=async()=>{try{await A.signInWithPopup(auth,new A.GoogleAuthProvider())}catch(x){V.err=x.message;showLogin()}};
+  window.gOut=async()=>{await A.signOut(auth);location.reload()};
+  const showLogin=()=>{document.getElementById('app').innerHTML=`<div class="card" style="max-width:420px;margin:60px auto;text-align:center"><h1>📋 Theo dõi hồ sơ XKLĐ Nhật</h1><p class="mu">Đăng nhập bằng Gmail được cấp quyền để tiếp tục.</p><button class="btn p" onclick="gLogin()">Đăng nhập với Google</button>${V.err?`<p style="color:var(--rd);font-size:13px">${e(V.err)}</p>`:''}</div>`};
+  const user=await new Promise(res=>{const un=A.onAuthStateChanged(auth,u=>{if(u){un();res(u)}else showLogin()})});
+  const fs=F.initializeFirestore(app,{localCache:F.persistentLocalCache()});
+  /* Lớp tương thích: giữ nguyên cách gọi DB.collection / DB.doc của code cũ */
+  DB={
+   collection:n=>({onSnapshot:(ok,ko)=>F.onSnapshot(F.collection(fs,n),ok,ko)}),
+   doc:p=>{const r=F.doc(fs,...p.split('/'));return{
+    set:d=>F.setDoc(r,JSON.parse(JSON.stringify(d))),
+    delete:()=>F.deleteDoc(r),
+    onSnapshot:(ok,ko)=>F.onSnapshot(r,s=>ok({exists:s.exists(),data:()=>s.data()}),ko)}}
+  };
+  /* Tên người sửa lấy từ tài khoản Google */
+  ME=user.displayName||user.email.split('@')[0];
+  U={id:async()=>ME,profiles:async ids=>Object.fromEntries(ids.map(i=>[i,{name:i}]))};
+ }catch(x){V.err=x.message;DB=null}
  if(!DB){render();return}
  DB.collection('orders').onSnapshot(s=>{
   const arr=s.docs.map(d=>JSON.parse(JSON.stringify(d.data()))).sort((a,b)=>(b.created||0)-(a.created||0));
@@ -194,7 +226,7 @@ render();
   if(JSON.stringify(arr)===JSON.stringify(D.orders)){render();return}
   D.orders=arr;LAST={};arr.forEach(o=>LAST[o.id]=strip(o));
   try{localStorage.setItem(K,JSON.stringify(D))}catch(_){}
-  rr()},x=>{V.err=x.message;render()});
+  rr()},x=>{V.err=x.code==='permission-denied'?'Email này chưa được cấp quyền. Hãy báo quản trị thêm email của bạn':x.message;render()});
  DB.doc('meta/tpl').onSnapshot(s=>{if(s.exists){D.tpl=JSON.parse(JSON.stringify(s.data()));rr()}},()=>{});
 })();
 </script></body></html>
